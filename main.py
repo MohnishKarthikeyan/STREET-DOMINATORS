@@ -29,13 +29,13 @@ round_over = False
 ROUND_OVER_COOLDOWN = 2000
 
 #define fighter variables
-WARRIOR_SIZE = 162
-WARRIOR_SCALE = 4
-WARRIOR_OFFSET = [72, 56]
+WARRIOR_SIZE = 128
+WARRIOR_SCALE = 2.5
+WARRIOR_OFFSET = [30, 52]
 WARRIOR_DATA = [WARRIOR_SIZE, WARRIOR_SCALE, WARRIOR_OFFSET]
-WIZARD_SIZE = 250
-WIZARD_SCALE = 3
-WIZARD_OFFSET = [112, 107]
+WIZARD_SIZE = 128
+WIZARD_SCALE = 2.5
+WIZARD_OFFSET = [72, 50]
 WIZARD_DATA = [WIZARD_SIZE, WIZARD_SCALE, WIZARD_OFFSET]
 
 #load music and sounds
@@ -51,15 +51,15 @@ magic_fx.set_volume(0.75)
 bg_image = pygame.image.load("assets/images/background/background_image.jfif").convert_alpha()
 
 #load spritesheets
-warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/warrior.png").convert_alpha()
-wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").convert_alpha()
+warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/Fire_Spirit.png").convert_alpha()
+wizard_sheet = pygame.image.load("assets/images/warrior/Sprites/Magician1.png").convert_alpha()
 
 #load vicory image
-victory_img = pygame.image.load("assets/images/icons/victory.png").convert_alpha()
+victory_img = pygame.image.load("assets/images/icons/victory2.jpg").convert_alpha()
 
 #define number of steps in each animation
-WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
-WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
+WARRIOR_ANIMATION_STEPS = [7, 8, 9, 5, 8, 3, 6,14]
+WIZARD_ANIMATION_STEPS = [8,8,8,7,9,4,4,15]
 
 #define font
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
@@ -140,7 +140,7 @@ while run:
       round_over_time = pygame.time.get_ticks()
   else:
     #display victory image
-    #screen.blit(victory_img, (360, 150))
+    screen.blit(victory_img, (140, 60))
     if pygame.time.get_ticks() - round_over_time > ROUND_OVER_COOLDOWN:
       round_over = False
       intro_count = 3

@@ -64,13 +64,15 @@ class Fighter():
           self.vel_y = -30
           self.jump = True
         #attack
-        if key[pygame.K_r] or key[pygame.K_t]:
+        if key[pygame.K_r] or key[pygame.K_t] or key[pygame.K_z] :
           self.attack(target)
           #determine which attack type was used
           if key[pygame.K_r]:
             self.attack_type = 1
           if key[pygame.K_t]:
             self.attack_type = 2
+          if key[pygame.K_z]:
+            self.attack_type=3
 
 
       #check player 2 controls
@@ -87,14 +89,15 @@ class Fighter():
           self.vel_y = -30
           self.jump = True
         #attack
-        if key[pygame.K_KP1] or key[pygame.K_KP2]:
+        if key[pygame.K_KP1] or key[pygame.K_KP2] or key[pygame.K_KP3]:
           self.attack(target)
           #determine which attack type was used
           if key[pygame.K_KP1]:
             self.attack_type = 1
           if key[pygame.K_KP2]:
             self.attack_type = 2
-
+          if key[pygame.K_KP3]:
+            self.attack_type = 3
 
     #apply gravity
     self.vel_y += GRAVITY
@@ -139,6 +142,8 @@ class Fighter():
         self.update_action(3)#3:attack1
       elif self.attack_type == 2:
         self.update_action(4)#4:attack2
+      elif self.attack_type==3:
+        self.update_action(7)
     elif self.jump == True:
       self.update_action(2)#2:jump
     elif self.running == True:
@@ -161,7 +166,7 @@ class Fighter():
       else:
         self.frame_index = 0
         #check if an attack was executed
-        if self.action == 3 or self.action == 4:
+        if self.action == 3 or self.action == 4 or self.action==7:
           self.attacking = False
           self.attack_cooldown = 20
         #check if damage was taken
