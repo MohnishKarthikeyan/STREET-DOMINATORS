@@ -8,7 +8,7 @@ class Fighter():
     self.offset = data[2]
     self.flip = flip
     self.animation_list = self.load_images(sprite_sheet, animation_steps)
-    self.action = 0#0:idle #1:run #2:jump #3:attack1 #4: attack2 #5:hit #6:deaths
+    self.action = 0#0:idle #1:run #2:jump #3:attack1 #4: attack2 #5:hit #6:deathss
     self.frame_index = 0
     self.image = self.animation_list[self.action][self.frame_index]
     self.update_time = pygame.time.get_ticks()
@@ -22,6 +22,10 @@ class Fighter():
     self.attack_sound = sound
     self.hit = False
     self.health = 100
+    if self.player==1:
+      self.special=0
+    else:
+      self.special=100
     self.alive = True
 
 
@@ -49,6 +53,12 @@ class Fighter():
     key = pygame.key.get_pressed()
 
     #can only perform other actions if not currently attacking
+    if self.player==1:
+      if self.special<100:
+        self.special+=0.05
+    else:
+      if self.special>0:
+        self.special-=0.05
     if self.attacking == False and self.alive == True and round_over == False:
       #check player 1 controls
       if self.player == 1:
@@ -64,15 +74,23 @@ class Fighter():
           self.vel_y = -30
           self.jump = True
         #attack
-        if key[pygame.K_r] or key[pygame.K_t] or key[pygame.K_z] :
-          self.attack(target)
+        if key[pygame.K_r] or key[pygame.K_t] :
           #determine which attack type was used
           if key[pygame.K_r]:
             self.attack_type = 1
+            self.attack(target)
           if key[pygame.K_t]:
             self.attack_type = 2
-          if key[pygame.K_z]:
-            self.attack_type=3
+            self.attack(target)
+        if key[pygame.K_e]:
+          if self.player==1:
+            if self.special>=100:
+              self.attack_type=3
+              self.attack(target)
+          else:
+            if self.special<=0:
+              self.attack_type=3
+              self.attack(target)
 
 
       #check player 2 controls
@@ -89,26 +107,34 @@ class Fighter():
           self.vel_y = -30
           self.jump = True
         #attack
-        if key[pygame.K_KP1] or key[pygame.K_KP2] or key[pygame.K_KP3]:
-          self.attack(target)
+        if key[pygame.K_x] or key[pygame.K_z] :
           #determine which attack type was used
-          if key[pygame.K_KP1]:
+          if key[pygame.K_x]:
             self.attack_type = 1
-          if key[pygame.K_KP2]:
+            self.attack(target)
+          if key[pygame.K_z]:
             self.attack_type = 2
-          if key[pygame.K_KP3]:
-            self.attack_type = 3
+            self.attack(target)
+        if key[pygame.K_c]:
+          if self.player==1:
+            if self.special>=100:
+              self.attack_type=3
+              self.attack(target)
+          else:
+            if self.special<=0:
+              self.attack_type=3
+              self.attack(target)
 
     #apply gravity
     self.vel_y += GRAVITY
     dy += self.vel_y
 
     #ensure player stays on screen
-    if self.rect.left + dx < 0:
-      dx = -self.rect.left
+    if self.rect.left + dx <=0:
+      dx = -self.rect.left+100
     if self.rect.right + dx > screen_width:
       dx = screen_width - self.rect.right
-    if self.rect.bottom + dy > screen_height - 110:
+    if self.rect.bottom + dy > (screen_height - 110):
       self.vel_y = 0
       self.jump = False
       dy = screen_height - 110 - self.rect.bottom
@@ -168,7 +194,9 @@ class Fighter():
         #check if an attack was executed
         if self.action == 3 or self.action == 4 or self.action==7:
           self.attacking = False
-          self.attack_cooldown = 20
+          self.attack_cooldown=20
+          if self.attack_type==3:
+            self.speical = 0
         #check if damage was taken
         if self.action == 5:
           self.hit = False
@@ -183,8 +211,18 @@ class Fighter():
       self.attacking = True
       self.attack_sound.play()
       attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
+      if self.attack_type==3:
+        if self.player==1:
+          self.special=0
+        else:
+          self.special=100
       if attacking_rect.colliderect(target.rect):
-        target.health -= 10
+        if self.attack_type==3:
+          target.health-=25
+        else:
+          target.health-=10
+          if self.player==1:
+            self.special+=1
         target.hit = True
 
 
