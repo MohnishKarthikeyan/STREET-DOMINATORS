@@ -1,10 +1,13 @@
 import pygame
+import random
 import button
 from pygame import mixer
 from fighter import Fighter
 import os
 
 def Street():
+  i=0
+  victory=False
   x=100
   y=100
   os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
@@ -58,7 +61,12 @@ def Street():
   magic_fx.set_volume(0.75)
 
   #load background image
-  bg_image = pygame.image.load("assets/images/background/background1.jfif").convert_alpha()
+  bg1_image = pygame.image.load("assets/images/background/background_image.jfif").convert_alpha()
+  bg2_image = pygame.image.load("assets/images/background/backround1.png").convert_alpha()
+  bg3_image = pygame.image.load("assets/images/background/backround2.png").convert_alpha()
+  bg4_image = pygame.image.load("assets/images/background/backround3.png").convert_alpha()
+  bg5_image = pygame.image.load("assets/images/background/backround4.png").convert_alpha()
+  backround=[bg1_image,bg2_image,bg3_image,bg4_image,bg5_image]
 
   #load spritesheets
   warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/Fire_Spirit.png").convert_alpha()
@@ -84,7 +92,7 @@ def Street():
 
   #function for drawing background
   def draw_bg():
-    scaled_bg = pygame.transform.scale(bg_image, (SCREEN_WIDTH+100, SCREEN_HEIGHT))
+    scaled_bg = pygame.transform.scale(backround[i], (SCREEN_WIDTH+100, SCREEN_HEIGHT))
     screen.blit(scaled_bg, (0, 0))
 
   #function for drawing fighter health bars
@@ -160,7 +168,23 @@ def Street():
         round_over_time = pygame.time.get_ticks()
     else:
       #display victory image
-      screen.blit(victory_img, (140, 60))
+      if score[0]==3:
+        score[0]=0
+        score[1]=0
+        victory=True
+      elif score[1]==3:
+        score[0]=0
+        score[1]=0
+        victory=True
+      if victory:
+        screen.blit(victory_img, (140, 60))
+        pygame.mixer.pause()
+        pygame.time.delay(1000)
+        return
+      if i+1==4:
+        i=0
+      else:
+        i+=1
       if pygame.time.get_ticks() - round_over_time > ROUND_OVER_COOLDOWN:
         round_over = False
         intro_count = 3

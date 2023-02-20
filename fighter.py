@@ -82,7 +82,7 @@ class Fighter():
           if key[pygame.K_t]:
             self.attack_type = 2
             self.attack(target)
-        if key[pygame.K_e]:
+        if key[pygame.K_v]:
           if self.player==1:
             if self.special>=100:
               self.attack_type=3
@@ -107,15 +107,15 @@ class Fighter():
           self.vel_y = -30
           self.jump = True
         #attack
-        if key[pygame.K_x] or key[pygame.K_z] :
+        if key[pygame.K_u] or key[pygame.K_i] :
           #determine which attack type was used
-          if key[pygame.K_x]:
+          if key[pygame.K_u]:
             self.attack_type = 1
             self.attack(target)
-          if key[pygame.K_z]:
+          if key[pygame.K_i]:
             self.attack_type = 2
             self.attack(target)
-        if key[pygame.K_c]:
+        if key[pygame.K_m]:
           if self.player==1:
             if self.special>=100:
               self.attack_type=3
@@ -218,11 +218,19 @@ class Fighter():
           self.special=100
       if attacking_rect.colliderect(target.rect):
         if self.attack_type==3:
-          target.health-=25
+          target.health-=20
         else:
-          target.health-=10
+          target.health-=2
           if self.player==1:
-            self.special+=1
+            if self.special+5>100:
+              self.special=100
+            else:
+              self.special+=5
+          else:
+            if self.special-5<0:
+              self.special=0
+            else:
+              self.special-=5
         target.hit = True
 
 
